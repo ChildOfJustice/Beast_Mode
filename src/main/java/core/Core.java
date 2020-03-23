@@ -1,8 +1,14 @@
-package core;
+package core;//package core;
 
+import com.bulletphysics.collision.shapes.BoxShape;
+import com.bulletphysics.collision.shapes.CylinderShape;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.plugins.FileLocator;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
+import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
@@ -15,6 +21,7 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Box;
 import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
@@ -46,6 +53,8 @@ import gui.GUI;
 import game.elements.WorldObject;
 import gui.keyInputSys;
 import player.sys.CurrentPlayer;
+
+import static player.sys.CurrentPlayer.playerShape;
 //^
 
 public class Core extends SimpleApplication implements ActionListener {
@@ -53,9 +62,10 @@ public class Core extends SimpleApplication implements ActionListener {
     static public Core app = new Core();
     public static AssetManager globalAssetManager;
     public static InputManager globalInputManager;
-    //^
 
-    static WorldObject bg;
+    public static float eps = 0.001f;
+    public static int camZoom = 20;
+    //^
 
     Spatial sceneModel;
     BulletAppState bulletAppState;
@@ -68,7 +78,7 @@ public class Core extends SimpleApplication implements ActionListener {
         app.setSettings(settings);
         app.start();
     }
-
+    public static Vector3f globalSpeed = new Vector3f(0,0,0);
     @Override
     public void simpleInitApp() {
         //Global vars init
@@ -79,22 +89,44 @@ public class Core extends SimpleApplication implements ActionListener {
         //^
 
         assetManager.registerLocator("assets", FileLocator.class);
+        bulletAppState = new BulletAppState();
+        bulletAppState.setDebugEnabled(true);//strange lines are here
+        stateManager.attach(bulletAppState);
 
         //Init functions calls
         keyInputSys.setUpKeys();
         //^
+        viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
 
 
 
 
+        //TODO change like in Mark's classes
+        WorldObject bg = new WorldObject(50f,100f,1f, 0, 4f, -4f, "Test\\Texture1.jpg");
+        sceneModel = bg.geom;
+        sceneModel.addControl(new RigidBodyControl(0));
+        rootNode.attachChild(sceneModel);
+        bulletAppState.getPhysicsSpace().add(sceneModel);
+
+        WorldObject floor = new WorldObject(5f,1f,1f, 0, -2f, -1f, "Test\\Texture1.jpg");
+        Geometry sceneModel1 = floor.geom;
+        sceneModel1.addControl(new RigidBodyControl(0));
+        rootNode.attachChild(sceneModel1);
+        bulletAppState.getPhysicsSpace().add(sceneModel1);
+        //sceneModel.setLocalScale(2f);
 
 
 
+        CurrentPlayer mainPlayer = new CurrentPlayer(new Vector3f(1,1,1), new Vector3f(0,4,-2), "Test\\Player.png");
 
-        bg = new WorldObject(50f,6f,1f,0f, 0f, 0f,"Test\\Texture1.jpg" );
-        CurrentPlayer mainPlayer = new CurrentPlayer(new Vector3f(1,1,1), new Vector3f(0,0,1), "Test\\Player.png");
+        //CapsuleCollisionShape sceneShape = new CapsuleCollisionShape(1f, 1f, 1);
+        //CollisionShape sceneShape = new BoxShape(new javax.vecmath.Vector3f(1, 1, 1));
+        //CharacterControl playerShape = new CharacterControl(sceneShape, 0.15f);
+        //playerShape.setSpatial(CurrentPlayer.actualObject.geom);
+        CurrentPlayer.actualObject.geom.addControl(playerShape);
+        bulletAppState.getPhysicsSpace().add(playerShape);
 
-        flyCam.setMoveSpeed(50f);
+        flyCam.setMoveSpeed(0f);
     }
 
     @Override
@@ -104,9 +136,17 @@ public class Core extends SimpleApplication implements ActionListener {
 
     @Override
     public void simpleUpdate(float tpf) {
-        //TODO: add update code
+        //TODO sometimes moving is very strange, we need to consider our way to control cube, not with only coords handling
+        Vector3f tempV = playerShape.getLinearVelocity();
 
-        //bg.pivot.move(0,0.01f *tpf, 0);
+        CurrentPlayer.move();
+        cam.setLocation(new Vector3f(playerShape.getPhysicsLocation().x, playerShape.getPhysicsLocation().y, playerShape.getPhysicsLocation().z+camZoom));
+
+        globalSpeed.y = tempV.y;
+
+        if(CurrentPlayer.jumpState) CurrentPlayer.jump();
+
+        playerShape.setLinearVelocity(globalSpeed);
+        //playerShape.setGravity(new Vector3f(0, -100f, 0));
     }
-
 }

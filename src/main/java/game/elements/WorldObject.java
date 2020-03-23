@@ -23,13 +23,14 @@ public class WorldObject {
     public Texture texture;
     public Material mat;
     public Node pivot;
+    public Geometry geom;
 
     public WorldObject(float xBoxP,float  yBoxP,float  zBoxP, float x, float y, float z, String fileName) {
         xBox = xBoxP;
         yBox = yBoxP;
         zBox = zBoxP;
         Box box = new Box(xBox, yBox, zBox);
-        Geometry geom = new Geometry("geom", box);
+        geom = new Geometry("geom", box);
 //        geom.setQueueBucket(RenderQueue.Bucket.Transparent);
         this.texture = globalAssetManager.loadTexture(fileName);
         mat = new Material(globalAssetManager, "Common/MatDefs/Misc/Unshaded.j3md");

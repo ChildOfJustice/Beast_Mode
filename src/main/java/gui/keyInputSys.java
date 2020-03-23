@@ -3,6 +3,7 @@ package gui;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
 import core.Core;
+import org.lwjgl.Sys;
 import player.sys.CurrentPlayer;
 
 import static core.Core.globalInputManager;  // <-- !!!  similar to using namespace (!)
@@ -25,20 +26,23 @@ public class keyInputSys {
     public static void analyzeAction(String binding, boolean isPressed) {
         switch (binding) {
             case "Left":
-                CurrentPlayer.left = isPressed;
+                if(isPressed)CurrentPlayer.left = 1;
+                else CurrentPlayer.left = 2;
                 break;
             case "Right":
-                CurrentPlayer.right = isPressed;
+                if(isPressed)CurrentPlayer.right = 1;
+                else CurrentPlayer.right = 2;
                 break;
             case "Up":
-                CurrentPlayer.up = isPressed;
+                if(isPressed)CurrentPlayer.up = 1;
+                else CurrentPlayer.up = 2;
                 break;
             case "Down":
-                CurrentPlayer.down = isPressed;
+                if(isPressed)CurrentPlayer.down = 1;
+                else CurrentPlayer.down = 2;
                 break;
             case "Jump":
-                // if (isPressed) { player.jump(new Vector3f(0,20f,0));}
-                //player.pivot.move(1f,0.1f *tpf, 0);
+                CurrentPlayer.jumpState = true;
                 break;
         }
     }
