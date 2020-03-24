@@ -42,9 +42,12 @@ import com.jme3.scene.Spatial;
 
 
 //OUR IMPORTS:
+import game.elements.Model;
+import game.elements.MyBox;
 import gui.GUI;
 import game.elements.WorldObject;
 import gui.keyInputSys;
+
 import player.sys.CurrentPlayer;
 //^
 
@@ -53,7 +56,8 @@ public class Core extends SimpleApplication implements ActionListener {
     static public Core app = new Core();
     public static AssetManager globalAssetManager;
     public static InputManager globalInputManager;
-    //^
+    public static Node globalRootNode;
+    //^_^
 
     static WorldObject bg;
 
@@ -71,11 +75,12 @@ public class Core extends SimpleApplication implements ActionListener {
 
     @Override
     public void simpleInitApp() {
+
         //Global vars init
         globalAssetManager = this.assetManager;
         globalInputManager = this.inputManager;
 
-        WorldObject.globalRootNode = rootNode;
+        globalRootNode = rootNode;
         //^
 
         assetManager.registerLocator("assets", FileLocator.class);
@@ -84,15 +89,16 @@ public class Core extends SimpleApplication implements ActionListener {
         keyInputSys.setUpKeys();
         //^
 
+        Model testM = new Model(1,1,1,"textyre.png", "mod.obj");
+        MyBox testB = new MyBox("Test\\Texture1.jpg",2,2,2,2,2,2);
 
 
+        DirectionalLight sun = new DirectionalLight();
+        sun.setDirection(new Vector3f(0.1f, 0.7f, 1.0f));
+        rootNode.addLight(sun);
 
-
-
-
-
-        bg = new WorldObject(50f,6f,1f,0f, 0f, 0f,"Test\\Texture1.jpg" );
-        CurrentPlayer mainPlayer = new CurrentPlayer(new Vector3f(1,1,1), new Vector3f(0,0,1), "Test\\Player.png");
+        // bg = new WorldObject(50f,6f,1f,0f, 0f, 0f,"Test\\Texture1.jpg" );
+        //CurrentPlayer mainPlayer = new CurrentPlayer(new Vector3f(1,1,1), new Vector3f(0,0,1), "Test\\Player.png");
 
         flyCam.setMoveSpeed(50f);
     }
