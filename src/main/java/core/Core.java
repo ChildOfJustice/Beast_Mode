@@ -49,9 +49,12 @@ import com.jme3.scene.Spatial;
 
 
 //OUR IMPORTS:
+import game.elements.Model;
+import game.elements.MyBox;
 import gui.GUI;
 import game.elements.WorldObject;
 import gui.keyInputSys;
+
 import player.sys.CurrentPlayer;
 
 import static player.sys.CurrentPlayer.playerShape;
@@ -62,6 +65,8 @@ public class Core extends SimpleApplication implements ActionListener {
     static public Core app = new Core();
     public static AssetManager globalAssetManager;
     public static InputManager globalInputManager;
+    public static Node globalRootNode;
+    //^_^
 
     public static float eps = 0.001f;
     public static int camZoom = 20;
@@ -81,11 +86,12 @@ public class Core extends SimpleApplication implements ActionListener {
     public static Vector3f globalSpeed = new Vector3f(0,0,0);
     @Override
     public void simpleInitApp() {
+
         //Global vars init
         globalAssetManager = this.assetManager;
         globalInputManager = this.inputManager;
 
-        WorldObject.globalRootNode = rootNode;
+        globalRootNode = rootNode;
         //^
 
         assetManager.registerLocator("assets", FileLocator.class);
@@ -107,6 +113,8 @@ public class Core extends SimpleApplication implements ActionListener {
         sceneModel.addControl(new RigidBodyControl(0));
         rootNode.attachChild(sceneModel);
         bulletAppState.getPhysicsSpace().add(sceneModel);
+        Model testM = new Model(1,1,1,"textyre.png", "mod.obj");
+        MyBox testB = new MyBox("Test\\Texture1.jpg",2,2,2,2,2,2);
 
         WorldObject floor = new WorldObject(5f,1f,1f, 0, -2f, -1f, "Test\\Texture1.jpg");
         Geometry sceneModel1 = floor.geom;
@@ -115,9 +123,14 @@ public class Core extends SimpleApplication implements ActionListener {
         bulletAppState.getPhysicsSpace().add(sceneModel1);
         //sceneModel.setLocalScale(2f);
 
+        DirectionalLight sun = new DirectionalLight();
+        sun.setDirection(new Vector3f(0.1f, 0.7f, 1.0f));
+        rootNode.addLight(sun);
 
 
         CurrentPlayer mainPlayer = new CurrentPlayer(new Vector3f(1,1,1), new Vector3f(0,4,-2), "Test\\Player.png");
+        // bg = new WorldObject(50f,6f,1f,0f, 0f, 0f,"Test\\Texture1.jpg" );
+        //CurrentPlayer mainPlayer = new CurrentPlayer(new Vector3f(1,1,1), new Vector3f(0,0,1), "Test\\Player.png");
 
         //CapsuleCollisionShape sceneShape = new CapsuleCollisionShape(1f, 1f, 1);
         //CollisionShape sceneShape = new BoxShape(new javax.vecmath.Vector3f(1, 1, 1));

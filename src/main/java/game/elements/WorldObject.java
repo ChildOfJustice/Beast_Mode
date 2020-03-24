@@ -7,22 +7,22 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
+import sun.jvm.hotspot.opto.RootNode;
 
 
 import static core.Core.globalAssetManager;
+import static core.Core.globalRootNode;
 
 public class WorldObject {
-    public static Node globalRootNode;
-
-    public float xBox;
-    public float yBox;
-    public float zBox;
-
+    public Geometry geom;
     public Texture texture;
     public Material mat;
     public Node pivot;
+    public Spatial spatial;
+
     public Geometry geom;
 
     public WorldObject(float xBoxP,float  yBoxP,float  zBoxP, float x, float y, float z, String fileName) {
@@ -42,4 +42,5 @@ public class WorldObject {
         geom.setLocalTranslation(new Vector3f(x, y, z));
         globalRootNode.attachChild(pivot);
     }
+
 }

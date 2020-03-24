@@ -4,6 +4,7 @@ import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
+import game.elements.MyBox;
 import core.Core;
 import game.elements.WorldObject;
 
@@ -23,6 +24,8 @@ public class CurrentPlayer {
     public static int maxJumpTime;
 
     public CurrentPlayer(Vector3f size, Vector3f pos, String textureFilePath){
+//        currentPlayer = new MyBox(size.x,size.y,size.z,pos.x,pos.y,pos.z,textureFilePath);
+
         v = 1.5f;
         jumpSpeed = 10f;
         maxJumpTime = 100;
