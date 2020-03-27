@@ -26,20 +26,16 @@ public class keyInputSys {
     public static void analyzeAction(String binding, boolean isPressed) {
         switch (binding) {
             case "Left":
-                if(isPressed)CurrentPlayer.left = 1;
-                else CurrentPlayer.left = 2;
+                CurrentPlayer.left = isPressed;
                 break;
             case "Right":
-                if(isPressed)CurrentPlayer.right = 1;
-                else CurrentPlayer.right = 2;
+                CurrentPlayer.right = isPressed;
                 break;
             case "Up":
-                if(isPressed)CurrentPlayer.up = 1;
-                else CurrentPlayer.up = 2;
+                CurrentPlayer.up = isPressed;
                 break;
             case "Down":
-                if(isPressed)CurrentPlayer.down = 1;
-                else CurrentPlayer.down = 2;
+                CurrentPlayer.down = isPressed;
                 break;
             case "Jump":
                 CurrentPlayer.jumpState = true;
