@@ -1,6 +1,7 @@
 package game.elements;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.Vector3f;
@@ -22,25 +23,8 @@ public class WorldObject {
     public Material mat;
     public Node pivot;
     public Spatial spatial;
+    public int mass;
+    public CollisionShape shape;
 
-    public Geometry geom;
-
-    public WorldObject(float xBoxP,float  yBoxP,float  zBoxP, float x, float y, float z, String fileName) {
-        xBox = xBoxP;
-        yBox = yBoxP;
-        zBox = zBoxP;
-        Box box = new Box(xBox, yBox, zBox);
-        geom = new Geometry("geom", box);
-//        geom.setQueueBucket(RenderQueue.Bucket.Transparent);
-        this.texture = globalAssetManager.loadTexture(fileName);
-        mat = new Material(globalAssetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-//        mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-        mat.setTexture("ColorMap", texture);
-        geom.setMaterial(mat);
-        pivot = new Node("pivot");
-        pivot.attachChild(geom);
-        geom.setLocalTranslation(new Vector3f(x, y, z));
-        globalRootNode.attachChild(pivot);
-    }
 
 }
