@@ -4,51 +4,30 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.material.Material;
-import com.jme3.material.RenderState;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue;
-import com.jme3.scene.Geometry;
+import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
 import com.jme3.system.AppSettings;
-import com.jme3.texture.Texture;
-
-import com.jme3.app.SimpleApplication;
-import com.jme3.asset.plugins.ZipLocator;
-import com.jme3.collision.*;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
-
-import com.jme3.app.SimpleApplication;
-import com.jme3.asset.plugins.FileLocator;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.material.Material;
-import com.jme3.scene.Spatial;
 
 
 //OUR IMPORTS:
 import game.elements.Model;
 import game.elements.MyBox;
-import gui.GUI;
+import game.elements.light.AllLight;
+import game.elements.light.FlashLight;
+import game.elements.light.MyLamp;
+import game.elements.light.MySun;
 import game.elements.WorldObject;
 import gui.keyInputSys;
 
+
 import player.sys.CurrentPlayer;
+
+import static com.jme3.math.ColorRGBA.White;
 //^
 
 public class Core extends SimpleApplication implements ActionListener {
@@ -57,6 +36,7 @@ public class Core extends SimpleApplication implements ActionListener {
     public static AssetManager globalAssetManager;
     public static InputManager globalInputManager;
     public static Node globalRootNode;
+    public static Camera MyCam;
     //^_^
 
     static WorldObject bg;
@@ -79,7 +59,6 @@ public class Core extends SimpleApplication implements ActionListener {
         //Global vars init
         globalAssetManager = this.assetManager;
         globalInputManager = this.inputManager;
-
         globalRootNode = rootNode;
         //^
 
@@ -89,16 +68,21 @@ public class Core extends SimpleApplication implements ActionListener {
         keyInputSys.setUpKeys();
         //^
 
-        Model testM = new Model(1,1,1,"textyre.png", "mod.obj");
-        MyBox testB = new MyBox("Test\\Texture1.jpg",2,2,2,2,2,2);
+
+        //OBJECT
+        Model testM = new Model(11,1,1,"textyre.png", "mod.obj");
+        Model testCh = new Model(9,1,1,"chankTex.png", "chank.obj");
+        MyBox testB = new MyBox(10,10,2,"Test\\Texture1.jpg",2,2,2);
+        Model map = new Model(10,-30,10, "MapTex.png", "Map.obj");
+        //^
 
 
-        DirectionalLight sun = new DirectionalLight();
-        sun.setDirection(new Vector3f(0.1f, 0.7f, 1.0f));
-        rootNode.addLight(sun);
-
-        // bg = new WorldObject(50f,6f,1f,0f, 0f, 0f,"Test\\Texture1.jpg" );
-        //CurrentPlayer mainPlayer = new CurrentPlayer(new Vector3f(1,1,1), new Vector3f(0,0,1), "Test\\Player.png");
+        //LIGHT
+        MySun san = new MySun(10 , 30 , 10, White);
+        AllLight globalLight = new AllLight(0.1f, White);
+        FlashLight q = new FlashLight(10,-25,10, White,10,2,30,30);
+        MyLamp s = new MyLamp(10,-25,10, White,30);
+        //^
 
         flyCam.setMoveSpeed(50f);
     }
@@ -111,7 +95,6 @@ public class Core extends SimpleApplication implements ActionListener {
     @Override
     public void simpleUpdate(float tpf) {
         //TODO: add update code
-
         //bg.pivot.move(0,0.01f *tpf, 0);
     }
 

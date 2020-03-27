@@ -10,8 +10,8 @@ import com.jme3.scene.shape.Box;
 
 import static core.Core.*;
 
-public class MyBox extends WorldObject{
-    public MyBox(String TextureFileName,float x, float y, float z,float width, float height, float depth) {
+public class MyBox extends WorldObject  {
+    public MyBox(float x, float y, float z,String TextureFileName,float width, float height, float depth) {
         Box box = new Box(width, height, depth);
         geom = new Geometry("geom", box);
 //      geom.setQueueBucket(RenderQueue.Bucket.Transparent);
