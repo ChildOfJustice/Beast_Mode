@@ -23,14 +23,14 @@ public class CurrentPlayer {
     public static float jumpSpeed;
     public static int maxJumpTime;
 
-    public CurrentPlayer(Vector3f size, Vector3f pos, String textureFilePath, int mass){
+    public CurrentPlayer(Vector3f size, Vector3f pos, String textureFilePath){
 //        currentPlayer = new MyBox(size.x,size.y,size.z,pos.x,pos.y,pos.z,textureFilePath);
 
         v = 1.5f;
         jumpSpeed = 10f;
         maxJumpTime = 100;
 
-        actualObject = new MyBox(textureFilePath, pos.x,pos.y,pos.z,size.x,size.y,size.z, mass);
+        actualObject = new MyBox(pos.x,pos.y,pos.z,textureFilePath,size.x,size.y,size.z);
         //playerShape = actualObject.bodyControl;
     }
 

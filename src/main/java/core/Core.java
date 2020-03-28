@@ -15,8 +15,8 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
+import com.jme3.math.*;
+import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -114,6 +114,7 @@ public class Core extends SimpleApplication implements ActionListener {
         //^
 
 
+
         //OBJECT
         Model testM = new Model(11,1,1,"textyre.png", "mod.obj");
         Model testCh = new Model(9,1,1,"chankTex.png", "chank.obj");
@@ -142,24 +143,17 @@ public class Core extends SimpleApplication implements ActionListener {
 
     @Override
     public void simpleUpdate(float tpf) {
-        // 1. Сбросим список результатов.
-        CollisionResults results = new CollisionResults();
-        // 2. Направим луч от точки расположения камеры по направлению камеры.
-        Ray ray = new Ray(cam.getLocation(), cam.getDirection());
-        // 3. Соберём пересечения между Ray и Shootables в списке результатов.
-        // НЕ проверяйте столкновения с корневым узлом, потому что все столкновения будут попадать в skybox!
-        //Всегда создавайте отдельный узел для объектов, с которыми вы хотите реализовать столкновения.
-        CurrentPlayer.actualObject.pivot.collideWith(ray, results);
-        // 4. Распечатаем результат.
-        System.out.println("----- Collis? " + results.size() + "-----");
-        for (int i = 0; i < results.size(); i++) {
-            // Для каждого попадания мы узнаем название геометрии, место попадания и расстояние.
-            float dist = results.getCollision(i).getDistance();
-            Vector3f pt = results.getCollision(i).getContactPoint();
-            String hit = results.getCollision(i).getGeometry().getName();
-            System.out.println("* Столкновение #" + i);
-            System.out.println("  Вы стреляли в " + hit + " в " + pt + ", на расстояние " + dist + " wu.");
-        }
+//        CollisionResults results = new CollisionResults();
+//        Ray ray = new Ray(cam.getLocation(), cam.getDirection());
+//        CurrentPlayer.actualObject.pivot.collideWith(ray, results);
+//        System.out.println("----- Collis? " + results.size() + "-----");
+//        for (int i = 0; i < results.size(); i++) {
+//            float dist = results.getCollision(i).getDistance();
+//            Vector3f pt = results.getCollision(i).getContactPoint();
+//            String hit = results.getCollision(i).getGeometry().getName();
+//            System.out.println("* Столкновение #" + i);
+//            System.out.println(" Shoot in" + hit + " в " + pt + ", на " + dist + " wu.");
+//        }
         //TODO: add update code
         //bg.pivot.move(0,0.01f *tpf, 0);
     }
