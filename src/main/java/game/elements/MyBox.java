@@ -13,10 +13,8 @@ import com.jme3.scene.shape.Box;
 
 import static core.Core.*;
 
-public class MyBox extends WorldObject{
-    //final public RigidBodyControl bodyControl;
-
-    public MyBox(String TextureFileName,float x, float y, float z,float width, float height, float depth, int mass) {
+public class MyBox extends WorldObject  {
+    public MyBox(float x, float y, float z,String TextureFileName,float width, float height, float depth) {
         Box box = new Box(width, height, depth);
         geom = new Geometry("geom", box);
 //      geom.setQueueBucket(RenderQueue.Bucket.Transparent);
@@ -28,12 +26,6 @@ public class MyBox extends WorldObject{
         pivot = new Node("pivot");
         pivot.attachChild(geom);
         geom.setLocalTranslation(new Vector3f(x, y, z));
-        spatial = pivot;//!!!!
-        //shape = new BoxCollisionShape(new Vector3f(width,height,depth));
-        //bodyControl = new RigidBodyControl(shape, mass);
-        //spatial.addControl(bodyControl);
-        //globalBulletAppState.getPhysicsSpace().add(spatial);
-
         globalRootNode.attachChild(pivot);
     }
 
