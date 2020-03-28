@@ -23,7 +23,6 @@ public class WorldObject {
     public Material mat;
     public Node pivot;
     public Spatial spatial;
-
-
+    public CollisionShape shape;
 
 }

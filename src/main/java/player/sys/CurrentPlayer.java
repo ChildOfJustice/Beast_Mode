@@ -16,17 +16,17 @@ public class CurrentPlayer {
     public static float v;
 
 
-    static public RigidBodyControl playerShape;
+    //static public RigidBodyControl playerShape;
 
     public static MyBox actualObject;
     public static int jumpTimer;
     public static float jumpSpeed;
     public static int maxJumpTime;
 
-    public CurrentPlayer(Vector3f size, Vector3f pos, String textureFilePath){
+    public CurrentPlayer(Vector3f pos, String textureFilePath, Vector3f size){
 //        currentPlayer = new MyBox(size.x,size.y,size.z,pos.x,pos.y,pos.z,textureFilePath);
 
-        v = 1.5f;
+        v = 0.00005f;
         jumpSpeed = 10f;
         maxJumpTime = 100;
 
@@ -35,18 +35,9 @@ public class CurrentPlayer {
     }
 
     public static void move() {
-        if(CurrentPlayer.right){
+        if(CurrentPlayer.down){
             //Core.globalSpeed = playerShape.getLinearVelocity();
-            Core.globalSpeed.x = CurrentPlayer.v;
-            System.out.println(Core.globalSpeed.x );
-        } else {
-            Core.globalSpeed.x = 0;
-        }
-        if(CurrentPlayer.left){
-            //Core.globalSpeed = playerShape.getLinearVelocity();
-            Core.globalSpeed.x = -CurrentPlayer.v;
-        } else {
-            Core.globalSpeed.x = 0;
+            actualObject.pivot.move(new Vector3f(actualObject.pivot.getLocalTranslation().x, actualObject.pivot.getLocalTranslation().y-v, actualObject.pivot.getLocalTranslation().z));
         }
 
 //        if(CurrentPlayer.left == 1) {
@@ -89,13 +80,13 @@ public class CurrentPlayer {
 //        }
     }
 
-    public static void jump() {
-        Core.globalSpeed = playerShape.getLinearVelocity();
-        Core.globalSpeed.y = CurrentPlayer.jumpSpeed;
-        CurrentPlayer.jumpTimer++;
-        if(CurrentPlayer.jumpTimer >= CurrentPlayer.maxJumpTime){
-            CurrentPlayer.jumpState = false;
-            CurrentPlayer.jumpTimer = 0;
-        }
-    }
+//    public static void jump() {
+//        Core.globalSpeed = playerShape.getLinearVelocity();
+//        Core.globalSpeed.y = CurrentPlayer.jumpSpeed;
+//        CurrentPlayer.jumpTimer++;
+//        if(CurrentPlayer.jumpTimer >= CurrentPlayer.maxJumpTime){
+//            CurrentPlayer.jumpState = false;
+//            CurrentPlayer.jumpTimer = 0;
+//        }
+//    }
 }

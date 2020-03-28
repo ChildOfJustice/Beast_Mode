@@ -85,6 +85,8 @@ public class Core extends SimpleApplication implements ActionListener {
     private Vector3f camDir = new Vector3f();
     private Vector3f camLeft = new Vector3f();
 
+    Model map;
+
     public static void main(String[] args) {
         AppSettings settings = new AppSettings(true);
         settings.setTitle("HardCraft");
@@ -113,13 +115,15 @@ public class Core extends SimpleApplication implements ActionListener {
         keyInputSys.setUpKeys();
         //^
 
+        CurrentPlayer pl = new CurrentPlayer(new Vector3f(0, 4, 0), "Test\\Player.png", new Vector3f(1, 1, 1));
+        CurrentPlayer.down = true;
 
 
         //OBJECT
-        Model testM = new Model(11,1,1,"textyre.png", "mod.obj");
-        Model testCh = new Model(9,1,1,"chankTex.png", "chank.obj");
-        MyBox testB = new MyBox(10,10,2,"Test\\Texture1.jpg",2,2,2);
-        Model map = new Model(10,-30,10, "MapTex.png", "Map.obj");
+        //Model testM = new Model(11,1,1,"textyre.png", "mod.obj");
+        //Model testCh = new Model(9,1,1,"chankTex.png", "chank.obj");
+        //MyBox testB = new MyBox(10,10,2,"Test\\Texture1.jpg",2,2,2);
+        map = new Model(0,-30,0, "MapTex.png", "Map.obj");
         //^
 
         DirectionalLight sun = new DirectionalLight();
@@ -143,17 +147,27 @@ public class Core extends SimpleApplication implements ActionListener {
 
     @Override
     public void simpleUpdate(float tpf) {
-//        CollisionResults results = new CollisionResults();
-//        Ray ray = new Ray(cam.getLocation(), cam.getDirection());
-//        CurrentPlayer.actualObject.pivot.collideWith(ray, results);
-//        System.out.println("----- Collis? " + results.size() + "-----");
-//        for (int i = 0; i < results.size(); i++) {
-//            float dist = results.getCollision(i).getDistance();
-//            Vector3f pt = results.getCollision(i).getContactPoint();
-//            String hit = results.getCollision(i).getGeometry().getName();
-//            System.out.println("* Столкновение #" + i);
-//            System.out.println(" Shoot in" + hit + " в " + pt + ", на " + dist + " wu.");
-//        }
+        CurrentPlayer.move();
+
+        CollisionResults results = new CollisionResults();
+        //CurrentPlayer.actualObject.pivot.getLocalTranslation(), new Vector3f(0, -1, 0)
+        Ray ray = new Ray(CurrentPlayer.actualObject.pivot.getLocalTranslation(), new Vector3f(0f, -1f, 0f));
+        map.spatial.collideWith(ray, results);
+
+        //System.out.println(cam.getDirection());
+
+        System.out.println("----- Collis? " + results.size() + "-----");
+        for (int i = 0; i < results.size(); i++) {
+            float dist = results.getCollision(i).getDistance();
+            Vector3f pt = results.getCollision(i).getContactPoint();
+            String hit = results.getCollision(i).getGeometry().getName();
+            System.out.println("* Столкновение #" + i);
+            System.out.println(" Shoot in" + hit + " в " + pt + ", на " + dist + " wu.");
+            if(dist < 2f){
+                System.out.println("SADFASDASDADS");
+                CurrentPlayer.down = false;
+            }
+        }
         //TODO: add update code
         //bg.pivot.move(0,0.01f *tpf, 0);
     }

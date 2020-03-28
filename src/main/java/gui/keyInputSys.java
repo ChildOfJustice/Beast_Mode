@@ -1,7 +1,10 @@
 package gui;
 
+import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.math.Ray;
+import com.jme3.math.Vector3f;
 import core.Core;
 import org.lwjgl.Sys;
 import player.sys.CurrentPlayer;
@@ -35,6 +38,7 @@ public class keyInputSys {
                 CurrentPlayer.up = isPressed;
                 break;
             case "Down":
+
                 CurrentPlayer.down = isPressed;
                 break;
             case "Jump":
