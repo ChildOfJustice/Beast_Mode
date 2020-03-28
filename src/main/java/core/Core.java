@@ -136,11 +136,6 @@ public class Core extends SimpleApplication implements ActionListener {
 //        rootNode.addLight(lamp_light);
 
 
-        CurrentPlayer mainPlayer = new CurrentPlayer(new Vector3f(1,1,1), new Vector3f(0,4,2), "Test\\Player.png", 2);
-
-
-
-
 //        CollisionResults results = new CollisionResults();
 //        CurrentPlayer.actualObject.pivot.collideWith(b, results);
 //        System.out.println("Number of Collisions between" +
