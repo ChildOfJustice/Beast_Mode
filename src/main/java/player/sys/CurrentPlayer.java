@@ -44,7 +44,7 @@ public class CurrentPlayer {
         CollisionResults results = new CollisionResults();
         //CurrentPlayer.actualObject.pivot.getLocalTranslation(), new Vector3f(0, -1, 0)
         Ray ray = new Ray(Core.currentPlayer.actualObject.geom.getLocalTranslation(), new Vector3f(0f, -1f, 0f));
-        Core.solidMap.geom.collideWith(ray, results);
+        Core.map.spatial.collideWith(ray, results);
         if(results.size() > 0) {
             float dist = results.getCollision(0).getDistance();
             //Vector3f pt = results.getCollision(0).getContactPoint();

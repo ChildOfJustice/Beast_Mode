@@ -19,6 +19,7 @@ public class Model extends WorldObject {
     public Model(float x, float y, float z, String fileTexture,String fileModel) {
 
         spatial = globalAssetManager.loadModel(fileModel);
+        spatial.setName("MODEL");
         Material tex = new Material(globalAssetManager, "Common/MatDefs/Light/Lighting.j3md");
         tex.setTexture("DiffuseMap", globalAssetManager.loadTexture(fileTexture));
         spatial.setMaterial(tex);

@@ -88,7 +88,7 @@ public class Core extends SimpleApplication implements ActionListener {
     private Vector3f camDir = new Vector3f();
     private Vector3f camLeft = new Vector3f();
 
-    Model map;
+    public static Model map;
 
 
     public static void main(String[] args) {
@@ -126,19 +126,19 @@ public class Core extends SimpleApplication implements ActionListener {
         //Model testM = new Model(11,1,1,"textyre.png", "mod.obj");
         //Model testCh = new Model(9,1,1,"chankTex.png", "chank.obj");
         //MyBox testB = new MyBox(10,10,2,"Test\\Texture1.jpg",2,2,2);
-        //map = new Model(0,-30,0, "MapTex.png", "Map.obj");
-        solidMap = new MyBox(0,-30,0,"Test\\Texture1.jpg",20,2,20);
+        map = new Model(0,-30,0, "MapTex.png", "Map.obj");
+        //solidMap = new MyBox(0,-30,0,"Test\\Texture1.jpg",20,2,20);
         //^
 
-        //DirectionalLight sun = new DirectionalLight();
-        //sun.setDirection(new Vector3f(0.1f, 0.7f, 1.0f));
-        //rootNode.addLight(sun);
+        DirectionalLight sun = new DirectionalLight();
+        sun.setDirection(new Vector3f(0.1f, 0.7f, 1.0f));
+        rootNode.addLight(sun);
 
         //LIGHT
-        //MySun san = new MySun(10 , 30 , 10, White);
-        //AllLight globalLight = new AllLight(0.1f, White);
-        //FlashLight q = new FlashLight(10,-25,10, White,10,2,30,30);
-        //MyLamp s = new MyLamp(10,-25,10, White,30);
+        MySun san = new MySun(10 , 30 , 10, White);
+        AllLight globalLight = new AllLight(0.1f, White);
+        FlashLight q = new FlashLight(10,-25,10, White,10,2,30,30);
+        MyLamp s = new MyLamp(10,-25,10, White,30);
         //^
 
         cam.lookAt(new Vector3f(0, -10, 0),new Vector3f(0, 0f, 0));//second is for the camera rotation
@@ -154,29 +154,6 @@ public class Core extends SimpleApplication implements ActionListener {
 
     @Override
     public void simpleUpdate(float tpf) {
-
-
-
-
-        //System.out.println(cam.getDirection());
-
-        if(currentPlayer.backward) {
-            //TODO print player koords!!!!
-           // System.out.println("----- Collis? " + results.size() + "-----");
-
-//            for (int i = 0; i < results.size(); i++) {
-//                float dist = results.getCollision(i).getDistance();
-//                Vector3f pt = results.getCollision(i).getContactPoint();
-//                String hit = results.getCollision(i).getGeometry().getName();
-//                System.out.println("* Столкновение #" + i);
-//                System.out.println(" Shoot in" + hit + " в " + pt + ", на " + dist + " wu.");
-//                if (dist < 1.0f) {
-//                    System.out.println("SADFASDASDADS");
-//                    CurrentPlayer.down = false;
-//                }
-//            }
-        }
-
         currentPlayer.move();
         currentPlayer.gravitation();
     }
