@@ -16,17 +16,19 @@ import static core.Core.*;
 public class MyBox extends WorldObject  {
     public MyBox(float x, float y, float z,String TextureFileName,float width, float height, float depth) {
         Box box = new Box(width, height, depth);
-        geom = new Geometry("geom", box);
+        geom = new Geometry("<NAME>", box);
 //      geom.setQueueBucket(RenderQueue.Bucket.Transparent);
         this.texture = globalAssetManager.loadTexture(TextureFileName);
         mat = new Material(globalAssetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 //      mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
         mat.setTexture("ColorMap", texture);
         geom.setMaterial(mat);
-        pivot = new Node("pivot");
-        pivot.attachChild(geom);
+
         geom.setLocalTranslation(new Vector3f(x, y, z));
-        globalRootNode.attachChild(pivot);
+        //pivot = new Node("pivot");
+        //pivot.attachChild(geom);
+        //pivot.setLocalTranslation(new Vector3f(x, y, z));
+        globalRootNode.attachChild(geom);
     }
 
 }

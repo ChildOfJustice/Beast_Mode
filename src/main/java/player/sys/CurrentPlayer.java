@@ -3,30 +3,33 @@ package player.sys;
 import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.collision.CollisionResults;
+import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import game.elements.MyBox;
 import core.Core;
 import game.elements.WorldObject;
 
 public class CurrentPlayer {
-    static public boolean left = false, right = false, up = false, down = false;
-    public static boolean jumpState = false;
-    public static boolean ableToJump = true;
+    public boolean left = false, right = false, forward = false, backward = false;
+    public boolean jumpState = false;
+    public boolean ableToJump = true;
 
-    public static float v;
+    public float v;
 
 
     //static public RigidBodyControl playerShape;
 
-    public static MyBox actualObject;
-    public static int jumpTimer;
-    public static float jumpSpeed;
-    public static int maxJumpTime;
+    public MyBox actualObject;
+    public int jumpTimer;
+    public float jumpSpeed;
+    public int maxJumpTime;
+    public float gravity;
 
     public CurrentPlayer(Vector3f pos, String textureFilePath, Vector3f size){
 //        currentPlayer = new MyBox(size.x,size.y,size.z,pos.x,pos.y,pos.z,textureFilePath);
 
-        v = 0.00005f;
+        v = 0.5f;
         jumpSpeed = 10f;
         maxJumpTime = 100;
 
@@ -34,50 +37,43 @@ public class CurrentPlayer {
         //playerShape = actualObject.bodyControl;
     }
 
-    public static void move() {
-        if(CurrentPlayer.down){
-            //Core.globalSpeed = playerShape.getLinearVelocity();
-            actualObject.pivot.move(new Vector3f(actualObject.pivot.getLocalTranslation().x, actualObject.pivot.getLocalTranslation().y-v, actualObject.pivot.getLocalTranslation().z));
+
+    public void gravitation(){
+        boolean fall = true;
+
+        CollisionResults results = new CollisionResults();
+        //CurrentPlayer.actualObject.pivot.getLocalTranslation(), new Vector3f(0, -1, 0)
+        Ray ray = new Ray(Core.currentPlayer.actualObject.geom.getLocalTranslation(), new Vector3f(0f, -1f, 0f));
+        Core.solidMap.geom.collideWith(ray, results);
+        if(results.size() > 0) {
+            float dist = results.getCollision(0).getDistance();
+            //Vector3f pt = results.getCollision(0).getContactPoint();
+            //String hit = results.getCollision(0).getGeometry().getName();
+            //System.out.println("* Столкновение #" + 0);
+            //System.out.println(" Shoot in" + hit + " в " + pt + ", на " + dist + " wu.");
+            if (dist < 1.0f) {
+                fall = false;
+            }
+        }
+        if(fall) moveToLocation(0, -gravity, 0);
+    }
+
+    private void moveToLocation(float x, float y, float z){
+        actualObject.geom.setLocalTranslation(actualObject.geom.getLocalTranslation().x + x, actualObject.geom.getLocalTranslation().y + y, actualObject.geom.getLocalTranslation().z + z);
+    }
+
+    public void move() {
+        if(backward){
+            //blaaaah  chto za bred s move()
+            //actualObject.pivot.move(new Vector3f(actualObject.pivot.getLocalTranslation().x, actualObject.pivot.getLocalTranslation().y-v, actualObject.pivot.getLocalTranslation().z));
+            moveToLocation(0, 0, v);
         }
 
-//        if(CurrentPlayer.left == 1) {
-//            Core.globalSpeed = playerShape.getLinearVelocity();
-//            Core.globalSpeed.x -= CurrentPlayer.v;
-//            CurrentPlayer.left = 0;
-//        } else if(CurrentPlayer.left == 2){
-//            Core.globalSpeed = playerShape.getLinearVelocity();
-//            Core.globalSpeed.x += CurrentPlayer.v;
-//            CurrentPlayer.left = 0;
-//        }
-//        if(CurrentPlayer.right == 1) {
-//            Core.globalSpeed = playerShape.getLinearVelocity();
-//            Core.globalSpeed.x += CurrentPlayer.v;
-//            CurrentPlayer.right = 0;
-//        } else if(CurrentPlayer.right == 2){
-//            Core.globalSpeed = playerShape.getLinearVelocity();
-//            Core.globalSpeed.x -= CurrentPlayer.v;
-//            CurrentPlayer.right = 0;
-//        }
-//
-//
-//        if(CurrentPlayer.down == 1) {
-//            Core.globalSpeed = playerShape.getLinearVelocity();
-//            Core.globalSpeed.z += CurrentPlayer.v;
-//            CurrentPlayer.down = 0;
-//        } else if(CurrentPlayer.down == 2){
-//            Core.globalSpeed = playerShape.getLinearVelocity();
-//            Core.globalSpeed.z -= CurrentPlayer.v;
-//            CurrentPlayer.down = 0;
-//        }
-//        if(CurrentPlayer.up == 1) {
-//            Core.globalSpeed = playerShape.getLinearVelocity();
-//            Core.globalSpeed.z -= CurrentPlayer.v;
-//            CurrentPlayer.up = 0;
-//        } else if(CurrentPlayer.up == 2){
-//            Core.globalSpeed = playerShape.getLinearVelocity();
-//            Core.globalSpeed.z += CurrentPlayer.v;
-//            CurrentPlayer.up = 0;
-//        }
+        if(forward)moveToLocation(0, 0, -v);
+        if(right)moveToLocation(v, 0, 0);
+        if(left)moveToLocation(-v, 0, 0);
+
+
     }
 
 //    public static void jump() {

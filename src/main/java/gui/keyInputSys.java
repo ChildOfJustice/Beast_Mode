@@ -16,33 +16,32 @@ public class keyInputSys {
     static public void setUpKeys() {
         globalInputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         globalInputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
-        globalInputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
-        globalInputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
+        globalInputManager.addMapping("Forward", new KeyTrigger(KeyInput.KEY_W));
+        globalInputManager.addMapping("Backward", new KeyTrigger(KeyInput.KEY_S));
         globalInputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
         globalInputManager.addListener(Core.app, "Left");
         globalInputManager.addListener(Core.app, "Right");
-        globalInputManager.addListener(Core.app, "Up");
-        globalInputManager.addListener(Core.app, "Down");
+        globalInputManager.addListener(Core.app, "Forward");
+        globalInputManager.addListener(Core.app, "Backward");
         globalInputManager.addListener(Core.app, "Jump");
     }
 
     public static void analyzeAction(String binding, boolean isPressed) {
         switch (binding) {
             case "Left":
-                CurrentPlayer.left = isPressed;
+                Core.currentPlayer.left = isPressed;
                 break;
             case "Right":
-                CurrentPlayer.right = isPressed;
+                Core.currentPlayer.right = isPressed;
                 break;
-            case "Up":
-                CurrentPlayer.up = isPressed;
+            case "Forward":
+                Core.currentPlayer.forward = isPressed;
                 break;
-            case "Down":
-
-                CurrentPlayer.down = isPressed;
+            case "Backward":
+                Core.currentPlayer.backward = isPressed;
                 break;
             case "Jump":
-                CurrentPlayer.jumpState = true;
+                Core.currentPlayer.jumpState = true;
                 break;
         }
     }

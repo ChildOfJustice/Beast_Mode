@@ -69,6 +69,9 @@ public class Core extends SimpleApplication implements ActionListener {
     public static InputManager globalInputManager;
     public static Node globalRootNode;
     public static Camera MyCam;
+
+    public static CurrentPlayer currentPlayer;
+    static public MyBox solidMap;
     //^_^
 
     public static float eps = 0.001f;
@@ -86,6 +89,7 @@ public class Core extends SimpleApplication implements ActionListener {
     private Vector3f camLeft = new Vector3f();
 
     Model map;
+
 
     public static void main(String[] args) {
         AppSettings settings = new AppSettings(true);
@@ -115,29 +119,32 @@ public class Core extends SimpleApplication implements ActionListener {
         keyInputSys.setUpKeys();
         //^
 
-        CurrentPlayer pl = new CurrentPlayer(new Vector3f(0, 4, 0), "Test\\Player.png", new Vector3f(1, 1, 1));
-        CurrentPlayer.down = true;
+        currentPlayer = new CurrentPlayer(new Vector3f(0, 4, 0), "Test\\Player.png", new Vector3f(1, 1, 1));
+        currentPlayer.gravity = 0.71f;
 
-
-        //OBJECT
+        //OBJECTS
         //Model testM = new Model(11,1,1,"textyre.png", "mod.obj");
         //Model testCh = new Model(9,1,1,"chankTex.png", "chank.obj");
         //MyBox testB = new MyBox(10,10,2,"Test\\Texture1.jpg",2,2,2);
-        map = new Model(0,-30,0, "MapTex.png", "Map.obj");
+        //map = new Model(0,-30,0, "MapTex.png", "Map.obj");
+        solidMap = new MyBox(0,-30,0,"Test\\Texture1.jpg",20,2,20);
         //^
 
-        DirectionalLight sun = new DirectionalLight();
-        sun.setDirection(new Vector3f(0.1f, 0.7f, 1.0f));
-        rootNode.addLight(sun);
+        //DirectionalLight sun = new DirectionalLight();
+        //sun.setDirection(new Vector3f(0.1f, 0.7f, 1.0f));
+        //rootNode.addLight(sun);
 
         //LIGHT
-        MySun san = new MySun(10 , 30 , 10, White);
-        AllLight globalLight = new AllLight(0.1f, White);
-        FlashLight q = new FlashLight(10,-25,10, White,10,2,30,30);
-        MyLamp s = new MyLamp(10,-25,10, White,30);
+        //MySun san = new MySun(10 , 30 , 10, White);
+        //AllLight globalLight = new AllLight(0.1f, White);
+        //FlashLight q = new FlashLight(10,-25,10, White,10,2,30,30);
+        //MyLamp s = new MyLamp(10,-25,10, White,30);
         //^
 
-        flyCam.setMoveSpeed(50f);
+        cam.lookAt(new Vector3f(0, -10, 0),new Vector3f(0, 0f, 0));//second is for the camera rotation
+        cam.setLocation(new Vector3f(0, 4, 20));
+        flyCam.setMoveSpeed(0f);
+        //flyCam.setEnabled(false);
     }
 
     @Override
@@ -147,29 +154,31 @@ public class Core extends SimpleApplication implements ActionListener {
 
     @Override
     public void simpleUpdate(float tpf) {
-        CurrentPlayer.move();
 
-        CollisionResults results = new CollisionResults();
-        //CurrentPlayer.actualObject.pivot.getLocalTranslation(), new Vector3f(0, -1, 0)
-        Ray ray = new Ray(CurrentPlayer.actualObject.pivot.getLocalTranslation(), new Vector3f(0f, -1f, 0f));
-        map.spatial.collideWith(ray, results);
+
+
 
         //System.out.println(cam.getDirection());
 
-        System.out.println("----- Collis? " + results.size() + "-----");
-        for (int i = 0; i < results.size(); i++) {
-            float dist = results.getCollision(i).getDistance();
-            Vector3f pt = results.getCollision(i).getContactPoint();
-            String hit = results.getCollision(i).getGeometry().getName();
-            System.out.println("* Столкновение #" + i);
-            System.out.println(" Shoot in" + hit + " в " + pt + ", на " + dist + " wu.");
-            if(dist < 2f){
-                System.out.println("SADFASDASDADS");
-                CurrentPlayer.down = false;
-            }
+        if(currentPlayer.backward) {
+            //TODO print player koords!!!!
+           // System.out.println("----- Collis? " + results.size() + "-----");
+
+//            for (int i = 0; i < results.size(); i++) {
+//                float dist = results.getCollision(i).getDistance();
+//                Vector3f pt = results.getCollision(i).getContactPoint();
+//                String hit = results.getCollision(i).getGeometry().getName();
+//                System.out.println("* Столкновение #" + i);
+//                System.out.println(" Shoot in" + hit + " в " + pt + ", на " + dist + " wu.");
+//                if (dist < 1.0f) {
+//                    System.out.println("SADFASDASDADS");
+//                    CurrentPlayer.down = false;
+//                }
+//            }
         }
-        //TODO: add update code
-        //bg.pivot.move(0,0.01f *tpf, 0);
+
+        currentPlayer.move();
+        currentPlayer.gravitation();
     }
 
 }
